@@ -5,6 +5,7 @@ const User = mongoose.model("User", {
     unique: true,
     type: String,
   },
+  name: String,
   token: String,
   hash: String,
   salt: String,

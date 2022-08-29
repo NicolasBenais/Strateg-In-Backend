@@ -18,9 +18,13 @@ app.use(registerRoutes);
 const loginRoutes = require("./routes/login");
 app.use(loginRoutes);
 
-// Users
-const userRoutes = require("./routes/users");
+// User
+const userRoutes = require("./routes/user");
 app.use(userRoutes);
+
+// Users
+const usersRoutes = require("./routes/users");
+app.use(usersRoutes);
 
 app.all("*", (req, res) => {
   res.status(400).json("Page introuvable");

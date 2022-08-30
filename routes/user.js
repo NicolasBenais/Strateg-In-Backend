@@ -7,21 +7,27 @@ const uid2 = require("uid2");
 // Model
 const User = require("../models/User");
 
-router.get("/user/:token", async (req, res) => {
+router.get("/user/:userId", async (req, res) => {
   try {
-    const user = await User.findOne({ token: req.params.token });
-    res.json({ userId: user._id, name: user.name, email: user.email });
+    const user = await User.findById({ _id: req.params.userId });
+    res.json({
+      userId: user._id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+    });
   } catch (error) {
     res.status(400).json(error.message);
   }
 });
 
 router.post("/user/update", async (req, res) => {
-  const { userId, name, password } = req.fields;
+  const { userId, name, surname, password } = req.fields;
 
   try {
     const user = await User.findById(userId);
     user.name = name;
+    user.surname = surname;
 
     if (password) {
       const newSalt = uid2(64);

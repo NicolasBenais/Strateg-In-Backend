@@ -26,6 +26,10 @@ app.use(userRoutes);
 const usersRoutes = require("./routes/users");
 app.use(usersRoutes);
 
+// Task
+const taskRoutes = require("./routes/task");
+app.use(taskRoutes);
+
 app.all("*", (req, res) => {
   res.status(400).json("Page introuvable");
 });

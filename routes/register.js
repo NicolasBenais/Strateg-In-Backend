@@ -8,7 +8,7 @@ const uid2 = require("uid2");
 const User = require("../models/User");
 
 router.post("/register", async (req, res) => {
-  const { email, name, password } = req.fields;
+  const { email, name, surname, password } = req.fields;
 
   try {
     // If there is no email or no password fields
@@ -30,6 +30,7 @@ router.post("/register", async (req, res) => {
         const newUser = new User({
           email,
           name,
+          surname,
           salt,
           hash,
           token,

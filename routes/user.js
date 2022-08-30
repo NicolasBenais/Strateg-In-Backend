@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const SHA256 = require("crypto-js/sha256");
+const encBase64 = require("crypto-js/enc-base64");
+const uid2 = require("uid2");
 
 // Model
 const User = require("../models/User");
@@ -14,12 +17,23 @@ router.get("/user/:token", async (req, res) => {
 });
 
 router.post("/user/update", async (req, res) => {
+  const { userId, name, password } = req.fields;
+
   try {
-    const user = await User.findById(req.fields.userId);
-    user.name = req.fields.name;
+    const user = await User.findById(userId);
+    user.name = name;
+
+    if (password) {
+      const newSalt = uid2(64);
+      const newHash = SHA256(password + newSalt).toString(encBase64);
+      user.hash = newHash;
+      user.salt = newSalt;
+    }
+
     await user.save();
     res.json(user);
   } catch (error) {
+    console.log(error);
     res.status(400).json(error.message);
   }
 });

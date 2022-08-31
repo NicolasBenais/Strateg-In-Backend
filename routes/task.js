@@ -42,12 +42,22 @@ router.get("/tasks", async (req, res) => {
   }
 });
 
+router.get("/task/:taskId", async (req, res) => {
+  try {
+    const task = await Task.findById({ _id: req.params.taskId });
+    res.json(task);
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+});
+
 router.post("/task/update", async (req, res) => {
-  const { id, title, assignedTo, targetDate, priority, estimatedTime, done } =
+  console.log("res.fields:", req.fields);
+  const { _id, title, assignedTo, targetDate, priority, estimatedTime, done } =
     req.fields;
 
   try {
-    const task = await Task.findById(id);
+    const task = await Task.findById(_id);
     task.title = title;
     task.assignedTo = assignedTo;
     task.targetDate = targetDate;
@@ -59,6 +69,7 @@ router.post("/task/update", async (req, res) => {
 
     res.json(task);
   } catch (error) {
+    console.log(error);
     res.status(400).json(error.message);
   }
 });
